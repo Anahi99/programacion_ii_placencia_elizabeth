@@ -1,19 +1,35 @@
 
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
-from catalogo.models import Libro
+from django.db.models import Q
+from catalogo.models import Libro, Categoria
 from catalogo.forms.libro_form import LibroForm
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def libro_list(request):
-    libros = Libro.objects.all()
+    pista = request.GET.get('pista', '').strip()
+    categoria_id = request.GET.get('categoria_id', '').strip()
+    libros = Libro.objects.select_related('categoria').all()
+    if pista:
+        libros = libros.filter(
+            Q(titulo__icontains=pista) |
+            Q(autor__icontains=pista)  |
+            Q(categoria__nombre__icontains=pista)
+        )
+    if categoria_id:
+        libros = libros.filter(categoria_id=categoria_id)
+        categoria_id = Categoria.objects.all()
 
-    return render(
-        request,
-        'catalogo/libros/libro_list.html',
-        {'libros': libros}
-    )
-
+    context = {
+        'libros': libros,
+        'categoria_id': categoria_id,
+        'pista': pista,
+        'categorias': categoria_id,
+    }
+    return render(request, 'catalogo/libros/libro_list.html',
+                  {'libros':libros},
+                   context)
 
 def create_libro(request):
     if request.method == 'POST':

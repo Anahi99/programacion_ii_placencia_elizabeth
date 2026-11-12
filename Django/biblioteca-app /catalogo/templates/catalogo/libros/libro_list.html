@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de libros</title>
+    <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #333;
+        padding: 8px 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f0f0f0;
+    }
+</style>
     
 </head>
 <body>
@@ -15,6 +29,23 @@
             {% endfor %}
         </ul>
     {% endif %}
+     <p>
+        </button>
+        <a href="{% url 'libro_create' %}">
+            Crear Nuevo libro</a>   
+        </a>
+    </p>
+</button >
+    <button>
+        <a href="{% url 'categoria_list' %}">
+            Lista de Categorías</a>   
+        </a>
+    </button>  
+     <button>
+        <a href="{% url 'home' %}">
+            Atras</a>   
+        </a>         
+    </button>
     <table>
         <thead>
             <tr>
