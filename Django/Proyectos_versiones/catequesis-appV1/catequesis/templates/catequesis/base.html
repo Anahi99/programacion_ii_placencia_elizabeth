@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Curso de Sacramentos{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Control de Curso de Sacramentos</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                {% if user.is_authenticated %}
+                    <li>Usuario: <strong>{{ user.username }}</strong></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Salir</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Entrar</a></li>
+                    <li><a href="{% url 'registro' %}">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <hr>
+    </header>
+
+    {% if messages %}
+        <ul class="mensajes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block contenido %}{% endblock %}
+    </main>
+</body>
+</html>

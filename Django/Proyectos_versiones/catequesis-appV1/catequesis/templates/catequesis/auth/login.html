@@ -1,0 +1,14 @@
+{% extends 'catequesis/base.html' %}
+
+{% block titulo %}Entrar{% endblock %}
+
+{% block contenido %}
+    <h2>Iniciar sesión</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {{ form.as_p }}
+        <button type="submit">Entrar</button>
+    </form>
+    <p>¿No tiene cuenta? <a href="{% url 'registro' %}">Regístrese</a></p>
+{% endblock %}
